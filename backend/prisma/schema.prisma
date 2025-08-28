@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Essential for migrations!
+}
+
+model chat {
+  pkId                      Int      @id @default(autoincrement())
+  sessionId                 String   @db.VarChar(128)
+  archived                  Boolean?
+  contactPrimaryIdentityKey Bytes?
+  conversationTimestamp     BigInt?
+  createdAt                 BigInt?
+  createdBy                 String?  @db.VarChar(128)
+  description               String?  @db.VarChar(255)
+  disappearingMode          String?  @db.LongText
+  displayName               String?  @db.VarChar(128)
+  endOfHistoryTransfer      Boolean?
+  endOfHistoryTransferType  Int?
+  ephemeralExpiration       Int?
+  ephemeralSettingTimestamp BigInt?
+  id                        String   @db.VarChar(128)
+  isDefaultSubgroup         Boolean?
+  isParentGroup             Boolean?
+  lastMsgTimestamp          BigInt?
+  lidJid                    String?  @db.VarChar(128)
+  markedAsUnread            Boolean?
+  mediaVisibility           Int?
+  messages                  String?  @db.LongText
+  muteEndTime               BigInt?
+  name                      String?  @db.VarChar(128)
+  newJid                    String?  @db.VarChar(128)
+  notSpam                   Boolean?
+  oldJid                    String?  @db.VarChar(128)
+  pHash                     String?  @db.VarChar(128)
+  parentGroupId             String?  @db.VarChar(128)
+  participant               String?  @db.LongText
+  pinned                    Int?
+  pnJid                     String?  @db.VarChar(128)
+  pnhDuplicateLidThread     Boolean?
+  readOnly                  Boolean?
+  shareOwnPn                Boolean?
+  support                   Boolean?
+  suspended                 Boolean?
+  tcToken                   Bytes?
+  tcTokenSenderTimestamp    BigInt?
+  tcTokenTimestamp          BigInt?
+  terminated                Boolean?
+  unreadCount               Int?
+  unreadMentionCount        Int?
+  wallpaper                 String?  @db.LongText
+  lastMessageRecvTimestamp  Int?
+
+  @@unique([sessionId, id], map: "unique_id_per_session_id")
+  @@index([sessionId], map: "Chat_sessionId_idx")
+}
+
+model contact {
+  pkId         Int     @id @default(autoincrement())
+  sessionId    String  @db.VarChar(128)
+  id           String  @db.VarChar(128)
+  name         String? @db.VarChar(128)
+  notify       String? @db.VarChar(128)
+  verifiedName String? @db.VarChar(128)
+  imgUrl       String? @db.VarChar(255)
+  status       String? @db.VarChar(128)
+
+  @@unique([sessionId, id], map: "unique_id_per_session_id")
+  @@index([sessionId], map: "Contact_sessionId_idx")
+}
+
+model groupmetadata {
+  pkId              Int      @id @default(autoincrement())
+  sessionId         String   @db.VarChar(128)
+  id                String   @db.VarChar(128)
+  owner             String?  @db.VarChar(128)
+  subject           String   @db.VarChar(128)
+  subjectOwner      String?  @db.VarChar(128)
+  subjectTime       Int?
+  creation          Int?
+  desc              String?  @db.VarChar(255)
+  descOwner         String?  @db.VarChar(128)
+  descId            String?  @db.VarChar(128)
+  restrict          Boolean?
+  announce          Boolean?
+  size              Int?
+  participants      String   @db.LongText
+  ephemeralDuration Int?
+  inviteCode        String?  @db.VarChar(255)
+
+  @@unique([sessionId, id], map: "unique_id_per_session_id")
+  @@index([sessionId], map: "GroupMetadata_sessionId_idx")
+}
+
+model message {
+  pkId                            Int      @id @default(autoincrement())
+  sessionId                       String   @db.VarChar(128)
+  remoteJid                       String   @db.VarChar(128)
+  id                              String   @db.VarChar(128)
+  agentId                         String?  @db.VarChar(128)
+  bizPrivacyStatus                Int?
+  broadcast                       Boolean?
+  clearMedia                      Boolean?
+  duration                        Int?
+  ephemeralDuration               Int?
+  ephemeralOffToOn                Boolean?
+  ephemeralOutOfSync              Boolean?
+  ephemeralStartTimestamp         BigInt?
+  finalLiveLocation               String?  @db.LongText
+  futureproofData                 Bytes?
+  ignore                          Boolean?
+  keepInChat                      String?  @db.LongText
+  key                             String   @db.LongText
+  labels                          String?  @db.LongText
+  mediaCiphertextSha256           Bytes?
+  mediaData                       String?  @db.LongText
+  message                         String?  @db.LongText
+  messageC2STimestamp             BigInt?
+  messageSecret                   Bytes?
+  messageStubParameters           String?  @db.LongText
+  messageStubType                 Int?
+  messageTimestamp                BigInt?
+  multicast                       Boolean?
+  originalSelfAuthorUserJidString String?  @db.VarChar(128)
+  participant                     String?  @db.VarChar(128)
+  paymentInfo                     String?  @db.LongText
+  photoChange                     String?  @db.LongText
+  pollAdditionalMetadata          String?  @db.LongText
+  pollUpdates                     String?  @db.LongText
+  pushName                        String?  @db.VarChar(128)
+  quotedPaymentInfo               String?  @db.LongText
+  quotedStickerData               String?  @db.LongText
+  reactions                       String?  @db.LongText
+  revokeMessageTimestamp          BigInt?
+  starred                         Boolean?
+  status                          Int?
+  statusAlreadyViewed             Boolean?
+  statusPsa                       String?  @db.LongText
+  urlNumber                       Boolean?
+  urlText                         Boolean?
+  userReceipt                     String?  @db.LongText
+  verifiedBizName                 String?  @db.VarChar(128)
+
+  @@unique([sessionId, remoteJid, id], map: "unique_message_key_per_session_id")
+  @@index([sessionId], map: "Message_sessionId_idx")
+}
+
+model session {
+  pkId      Int    @id @default(autoincrement())
+  sessionId String @db.VarChar(128)
+  id        String @db.VarChar(255)
+  data      String @db.Text
+
+  @@unique([sessionId, id], map: "unique_id_per_session_id")
+  @@index([sessionId], map: "Session_sessionId_idx")
+}
