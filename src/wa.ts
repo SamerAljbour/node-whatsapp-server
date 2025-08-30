@@ -70,10 +70,10 @@ export async function createSession(options: createSessionOptions) {
     try {
       await Promise.all([
         logout && socket.logout(),
-        prisma.prisma.chat.deleteMany({ where: { sessionId } }),
-        prisma.prisma.contact.deleteMany({ where: { sessionId } }),
-        prisma.prisma.message.deleteMany({ where: { sessionId } }),
-        prisma.prisma.session.deleteMany({ where: { sessionId } }),
+        prisma.chat.deleteMany({ where: { sessionId } }),
+        prisma.contact.deleteMany({ where: { sessionId } }),
+        prisma.message.deleteMany({ where: { sessionId } }),
+        prisma.session.deleteMany({ where: { sessionId } }),
       ]);
     } catch (e) {
       logger.error(e, 'An error occured during session destroy');
