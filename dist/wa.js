@@ -80,7 +80,7 @@ async function createSession(options) {
             await Promise.all([
                 logout && socket.logout(),
                 // shared_1.prisma.chat.deleteMany({ where: { sessionId } }),
-                shared_1.prisma.contact.deleteMany({ where: { sessionId } }),
+                // shared_1.prisma.contact.deleteMany({ where: { sessionId } }),
                 // shared_1.prisma.message.deleteMany({ where: { sessionId } }),
                 // // shared_1.prisma.groupMetadata.deleteMany({ where: { sessionId } }),
                 shared_1.prisma.session.deleteMany({ where: { sessionId } }),

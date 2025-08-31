@@ -70,9 +70,9 @@ export async function createSession(options: createSessionOptions) {
     try {
       await Promise.all([
         logout && socket.logout(),
-        prisma.chat.deleteMany({ where: { sessionId } }),
-        prisma.contact.deleteMany({ where: { sessionId } }),
-        prisma.message.deleteMany({ where: { sessionId } }),
+        // prisma.chat.deleteMany({ where: { sessionId } }),
+        // prisma.contact.deleteMany({ where: { sessionId } }),
+        // prisma.message.deleteMany({ where: { sessionId } }),
         prisma.session.deleteMany({ where: { sessionId } }),
       ]);
     } catch (e) {
