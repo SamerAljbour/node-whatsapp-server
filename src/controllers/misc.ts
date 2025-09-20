@@ -10,7 +10,7 @@ export const makePhotoURLHandler =
       const session = getSession(sessionId)!;
 
       const exists = await jidExists(session, jid, type);
-      if (!exists) return res.status(400).json({ error: 'Jid does not exists' });
+      // if (!exists) return res.status(400).json({ error: 'Jid does not exists' });
 
       const url = await session.profilePictureUrl(jid, 'image');
       res.status(200).json({ url });

@@ -35,8 +35,8 @@ const send = async (req, res) => {
         const { jid, type = 'number', message, options } = req.body;
         const session = (0, wa_1.getSession)(req.params.sessionId);
         const exists = await (0, wa_1.jidExists)(session, jid, type);
-        if (!exists)
-            return res.status(400).json({ error: 'JID does not exists' });
+        // if (!exists)
+        //     return res.status(400).json({ error: 'JID does not exists' });
         const result = await session.sendMessage(jid, message, options);
         res.status(200).json(result);
     }
@@ -54,10 +54,10 @@ const sendBulk = async (req, res) => {
     for (const [index, { jid, type = 'number', delay = 1000, message, options },] of req.body.entries()) {
         try {
             const exists = await (0, wa_1.jidExists)(session, jid, type);
-            if (!exists) {
-                errors.push({ index, error: 'JID does not exists' });
-                continue;
-            }
+            // if (!exists) {
+            //     errors.push({ index, error: 'JID does not exists' });
+            //     continue;
+            // }
             if (index > 0)
                 await (0, utils_1.delay)(delay);
             const result = await session.sendMessage(jid, message, options);

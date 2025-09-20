@@ -8,8 +8,8 @@ const makePhotoURLHandler = (type = 'number') => async (req, res) => {
         const { sessionId, jid } = req.params;
         const session = (0, wa_1.getSession)(sessionId);
         const exists = await (0, wa_1.jidExists)(session, jid, type);
-        if (!exists)
-            return res.status(400).json({ error: 'Jid does not exists' });
+        // if (!exists)
+        //     return res.status(400).json({ error: 'Jid does not exists' });
         const url = await session.profilePictureUrl(jid, 'image');
         res.status(200).json({ url });
     }

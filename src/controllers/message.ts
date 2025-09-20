@@ -39,7 +39,7 @@ export const send: RequestHandler = async (req, res) => {
     const session = getSession(req.params.sessionId)!;
 
     const exists = await jidExists(session, jid, type);
-    if (!exists) return res.status(400).json({ error: 'JID does not exists' });
+    // if (!exists) return res.status(400).json({ error: 'JID does not exists' });
 
     const result = await session.sendMessage(jid, message, options);
     res.status(200).json(result);
@@ -61,10 +61,10 @@ export const sendBulk: RequestHandler = async (req, res) => {
   ] of req.body.entries()) {
     try {
       const exists = await jidExists(session, jid, type);
-      if (!exists) {
-        errors.push({ index, error: 'JID does not exists' });
-        continue;
-      }
+      // if (!exists) {
+      //   errors.push({ index, error: 'JID does not exists' });
+      //   continue;
+      // }
 
       if (index > 0) await delayMs(delay);
       const result = await session.sendMessage(jid, message, options);
@@ -91,7 +91,7 @@ export const download: RequestHandler = async (req, res) => {
       message,
       'buffer',
       {},
-{ logger: logger as any, reuploadRequest: session.updateMediaMessage }
+      { logger: logger as any, reuploadRequest: session.updateMediaMessage }
     );
 
     res.setHeader('Content-Type', content.mimetype!);
