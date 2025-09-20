@@ -46,8 +46,8 @@ const updateBlock = async (req, res) => {
         const session = (0, wa_1.getSession)(req.params.sessionId);
         const { jid, action = 'block' } = req.body;
         const exists = await (0, wa_1.jidExists)(session, jid);
-        if (!exists)
-            return res.status(400).json({ error: 'Jid does not exists' });
+        // if (!exists)
+        //     return res.status(400).json({ error: 'Jid does not exists' });
         await session.updateBlockStatus(jid, action);
         res.status(200).json({ message: `Contact ${action}ed` });
     }
